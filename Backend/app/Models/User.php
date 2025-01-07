@@ -50,9 +50,4 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function studrec()
-{
-    return $this->belongsTo(Studrec::class, 'studID', 'studID');
-}
-
 }
