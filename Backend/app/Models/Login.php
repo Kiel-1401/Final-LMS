@@ -9,6 +9,12 @@ class Login extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'loginID';
+
+    public $incrementing = true;
+    
+    protected $keyType = 'integer';
+
     protected $fillable = [
         'full',
         'deg',
@@ -29,5 +35,10 @@ class Login extends Model
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany(Scheduling::class, 'loginID', 'loginID');
     }
 }
