@@ -3,9 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Auth\Authenticatable;
 
-class Studrec extends Model
+class Studrec extends Model implements AuthenticatableContract
 {
+    use HasApiTokens, Authenticatable;
+
     protected $table = 'studrec'; // Explicitly set the table name
 
     protected $primaryKey = 'studID'; // Set the primary key
@@ -16,10 +21,8 @@ class Studrec extends Model
 
     protected $fillable = ['lname', 'fname', 'mname', 'gender', 'status', 'password']; // Include any other fillable fields
 
-
     public function role()
-{
-    return $this->belongsTo(Role::class, 'role_id');
-}
-
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
 }

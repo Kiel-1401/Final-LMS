@@ -3,8 +3,8 @@ import { Typography, Container } from "@mui/material";
 import AdminDashboard from "../components/templates/AdminDashboard";
 import StudentDashboard from "../components/templates/StudentDashboard";
 import TeacherDashboard from "../components/templates/TeacherDashboard";
-import axiosInstance from "../services/axiosInstance";
 import ProgHeadDashboard from "../components/templates/ProgHeadDashboard";
+import axiosInstance from "../services/axiosInstance";
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -28,6 +28,11 @@ const Dashboard = () => {
     return <Typography>Loading...</Typography>;
   }
 
+  // Check if user.role is available to avoid errors when accessing it
+  if (!user.role || !user.role.name) {
+    return <Typography>Error: User role not found.</Typography>;
+  }
+
   return (
     <Container>
       <div>
@@ -37,8 +42,10 @@ const Dashboard = () => {
           <ProgHeadDashboard />
         ) : user.role.name === "Instructor" ? (
           <TeacherDashboard />
-        ) : (
+        ) : user.role.name === "Student" ? (
           <StudentDashboard />
+        ) : (
+          <Typography>Error: Invalid role.</Typography>
         )}
       </div>
     </Container>

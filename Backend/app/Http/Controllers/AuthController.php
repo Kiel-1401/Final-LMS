@@ -13,22 +13,43 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'identifier' => 'required',
             'password' => 'required',
+            'user_type' => 'required|in:student,other', // 'student' or 'other'
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = null;
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+        if ($request->user_type === 'student') {
+            // Find the student by studID in 'studrec'
+            $user = \App\Models\Studrec::where('studID', $request->identifier)->first();
+            if ($user) {
+                if (Hash::check($request->password, $user->password)) {
+                    $token = $user->createToken('Student Personal Access Token')->plainTextToken;
+                    return response()->json(['token' => $token]);
+                } else {
+                    return response()->json(['error' => 'Invalid credentials. Password mismatch.'], 401);
+                }
+            } else {
+                return response()->json(['error' => 'Student not found.'], 404);
+            }
+        } else {
+            // Find the user by email in 'users'
+            $user = User::where('email', $request->identifier)->first();
+            if ($user) {
+                if (Hash::check($request->password, $user->password)) {
+                    $token = $user->createToken('User Personal Access Token')->plainTextToken;
+                    return response()->json(['token' => $token]);
+                } else {
+                    return response()->json(['error' => 'Invalid credentials. Password mismatch.'], 401);
+                }
+            } else {
+                return response()->json(['error' => 'User not found.'], 404);
+            }
         }
-
-        $token = $user->createToken('Personal Access Token')->plainTextToken;
-
-        return response()->json(['token' => $token]);
     }
+
+    
     public function logout(Request $request)
     {
         $user = Auth::user();

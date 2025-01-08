@@ -8,7 +8,6 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import logo512 from "../img/sicclogo.png";
 import backgroundImage from "../img/BackgroundSicc.jpg";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -17,6 +16,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Slide from "@mui/material/Slide";
+import axiosInstance from "../services/axiosInstance";
+import { Select, MenuItem, InputLabel, FormControl } from "@mui/material"; // Importing the Select component
 
 const defaultTheme = createTheme();
 
@@ -24,6 +25,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const [loginError, setLoginError] = React.useState(false);
+  const [userType, setUserType] = React.useState("student"); // State for user type
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -31,19 +33,24 @@ export default function Login() {
     event.preventDefault();
   };
 
+  const handleUserTypeChange = (event) => {
+    setUserType(event.target.value); // Handling user type change
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get("email");
+    const identifier =
+      userType === "student" ? data.get("studID") : data.get("email");
     const password = data.get("password");
 
     try {
-      const response = await axios.post("http://localhost:8000/api/login", {
-        email,
+      const response = await axiosInstance.post("/login", {
+        identifier,
         password,
+        user_type: userType, // Pass user type to backend
       });
 
-      // Check if response and response.data.token exist
       if (response && response.data && response.data.token) {
         localStorage.setItem("token", response.data.token);
         console.log("Login successful:", response.data.token);
@@ -59,16 +66,10 @@ export default function Login() {
   };
 
   React.useEffect(() => {
-    // Clear the error after 3 seconds
-    let timer;
     if (loginError) {
-      timer = setTimeout(() => {
-        setLoginError(false);
-      }, 3000);
+      const timer = setTimeout(() => setLoginError(false), 3000);
+      return () => clearTimeout(timer);
     }
-
-    // Cleanup function to clear the timer if the component unmounts
-    return () => clearTimeout(timer);
   }, [loginError]);
 
   return (
@@ -110,7 +111,8 @@ export default function Login() {
               }}
             >
               <AlertTitle>Error</AlertTitle>
-              Invalid email or password.
+              Invalid {userType === "student" ? "Student ID" : "Email"} or
+              password.
             </Alert>
           </Slide>
         )}
@@ -147,14 +149,29 @@ export default function Login() {
             noValidate
             sx={{ mt: 1, width: "100%" }}
           >
+            {/* User Type Select */}
+            <FormControl fullWidth margin="normal">
+              <InputLabel>User Type</InputLabel>
+              <Select
+                value={userType}
+                onChange={handleUserTypeChange}
+                label="User Type"
+                required
+              >
+                <MenuItem value="student">Student</MenuItem>
+                <MenuItem value="other">Other</MenuItem>
+              </Select>
+            </FormControl>
+
+            {/* Student ID or Email */}
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id={userType === "student" ? "studID" : "email"}
+              label={userType === "student" ? "Student ID" : "Email Address"}
+              name={userType === "student" ? "studID" : "email"}
+              autoComplete={userType === "student" ? "studID" : "email"}
               autoFocus
               sx={{ backgroundColor: "white" }}
             />
