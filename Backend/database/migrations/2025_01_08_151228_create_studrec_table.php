@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('prk', 50)->nullable();
             $table->string('lrn', 200)->nullable()->default('-');
             $table->string('email', 200)->nullable()->default('-');
+            $table->unsignedBigInteger('role_id')->nullable()->index('studrec_role_id_foreign');
             $table->integer('is_extracted')->default(0);
             $table->string('guardian', 200)->nullable();
             $table->string('gconnum', 200)->nullable();
@@ -40,6 +41,8 @@ return new class extends Migration
             $table->string('father', 200)->default('-');
             $table->integer('verify')->default(0);
             $table->string('remaR', 200)->default('-');
+            $table->string('password')->nullable();
+            $table->timestamps();
         });
     }
 
