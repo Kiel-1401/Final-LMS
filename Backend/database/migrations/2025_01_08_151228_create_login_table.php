@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('stat_emp')->nullable()->default(0);
             $table->integer('unitEarned')->nullable()->default(0);
             $table->integer('stat')->default(0);
+            $table->unsignedBigInteger('role_id')->nullable()->index('login_role_id_foreign');
         });
     }
 

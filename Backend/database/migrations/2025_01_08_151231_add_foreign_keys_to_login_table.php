@@ -13,10 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->timestamps();
+        Schema::table('login', function (Blueprint $table) {
+            $table->foreign(['role_id'])->references(['id'])->on('roles')->onDelete('SET NULL');
         });
     }
 
@@ -27,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::table('login', function (Blueprint $table) {
+            $table->dropForeign('login_role_id_foreign');
+        });
     }
 };
