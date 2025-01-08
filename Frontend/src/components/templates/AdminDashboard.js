@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Link } from "@mui/material";
 import Sidebar from "../atoms/Sidebar";
 import {
   Subject,
@@ -10,6 +10,7 @@ import {
 } from "@mui/icons-material";
 import Navbar from "../atoms/Navbar";
 import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
+import { Link as RouterLink } from "react-router-dom"; // Import Link from react-router-dom
 
 const AdminDashboard = () => {
   const navigate = useNavigate(); // Use navigate for programmatic navigation
@@ -38,27 +39,27 @@ const AdminDashboard = () => {
     {
       text: "Subject",
       icon: <Subject />,
-      onClick: () => alert("Subject clicked"),
+      onClick: () => navigate("/dashboard"),
     },
     {
       text: "Program Head",
       icon: <SupervisorAccount />,
-      onClick: () => alert("Program Head clicked"),
+      onClick: () => navigate("/ProgHead"),
     },
     {
       text: "Courses",
       icon: <School />,
-      onClick: () => alert("Courses clicked"),
+      onClick: () => navigate("/ACourse"),
     },
     {
       text: "Instructor",
       icon: <Diversity1 />,
-      onClick: () => alert("Instructor clicked"),
+      onClick: () => navigate("/AInstrctor"),
     },
     {
       text: "Students",
       icon: <Groups2 />,
-      onClick: () => alert("Students clicked"),
+      onClick: () => navigate("/Students"),
     },
   ];
 
@@ -69,13 +70,36 @@ const AdminDashboard = () => {
         navItems={navItems}
         onMenuClick={handleMenuClick}
       />
-      <Sidebar items={sidebarItems} drawerWidth={240} />
+      <Sidebar
+        items={sidebarItems.map((item) => ({
+          ...item,
+          Link: item.Link ? (
+            <Link
+              component={RouterLink}
+              to={item.Link}
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              {item.icon}
+              {item.text}
+            </Link>
+          ) : (
+            <Box
+              sx={{ display: "flex", alignItems: "center" }}
+              onClick={item.onClick}
+            >
+              {item.icon}
+              {item.text}
+            </Box>
+          ),
+        }))}
+        drawerWidth={240}
+      />
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           p: 3,
-          marginLeft: "240px", // Matches Sidebar width
+          marginLeft: "-160px", // Matches Sidebar width
           marginTop: "64px", // Matches Navbar height
         }}
       >
