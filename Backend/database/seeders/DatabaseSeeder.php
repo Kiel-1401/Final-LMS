@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             StudrecSeeder::class,
             AssignStudentRoleSeeder::class,
+            LoginSeeder::class,
         ]);
     }
 }

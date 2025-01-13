@@ -9,11 +9,15 @@ class Login extends Model
 {
     use HasFactory;
 
+    protected $table = 'login';
+
     protected $primaryKey = 'loginID';
 
     public $incrementing = true;
     
     protected $keyType = 'integer';
+
+    public $timestamps = false;
 
     protected $fillable = [
         'full',
