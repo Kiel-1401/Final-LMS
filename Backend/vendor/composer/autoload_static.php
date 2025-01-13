@@ -439,8 +439,8 @@ class ComposerStaticInitda83b5ad38a633af40abc381ab1ac7c1
         ),
         'League\\Uri\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/uri-interfaces',
-            1 => __DIR__ . '/..' . '/league/uri',
+            0 => __DIR__ . '/..' . '/league/uri',
+            1 => __DIR__ . '/..' . '/league/uri-interfaces',
         ),
         'League\\OAuth2\\Server\\' => 
         array (
@@ -781,6 +781,7 @@ class ComposerStaticInitda83b5ad38a633af40abc381ab1ac7c1
         'Database\\Seeders\\AdminSeeder' => __DIR__ . '/../..' . '/database/seeders/AdminSeeder.php',
         'Database\\Seeders\\AssignStudentRoleSeeder' => __DIR__ . '/../..' . '/database/seeders/AssignStudentRoleSeeder.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
+        'Database\\Seeders\\LoginSeeder' => __DIR__ . '/../..' . '/database/seeders/LoginSeeder.php',
         'Database\\Seeders\\RoleSeeder' => __DIR__ . '/../..' . '/database/seeders/RoleSeeder.php',
         'Database\\Seeders\\StudrecSeeder' => __DIR__ . '/../..' . '/database/seeders/StudrecSeeder.php',
         'Database\\Seeders\\UserSeeder' => __DIR__ . '/../..' . '/database/seeders/UserSeeder.php',

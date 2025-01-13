@@ -19,12 +19,9 @@ class UserSeeder extends Seeder
     {
         {
 
-           
-
-    
-            // You can add more users as needed
+             // You can add more users as needed
             User::create([
-                'name' => 'Depatment Head',
+                'name' => 'Program Head',
                 'email' => 'dh@example.com',
                 'password' => Hash::make('password123'),
                 'role_id' => 3,

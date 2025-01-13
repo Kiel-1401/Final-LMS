@@ -149,6 +149,7 @@ return array(
     'Database\\Seeders\\AdminSeeder' => $baseDir . '/database/seeders/AdminSeeder.php',
     'Database\\Seeders\\AssignStudentRoleSeeder' => $baseDir . '/database/seeders/AssignStudentRoleSeeder.php',
     'Database\\Seeders\\DatabaseSeeder' => $baseDir . '/database/seeders/DatabaseSeeder.php',
+    'Database\\Seeders\\LoginSeeder' => $baseDir . '/database/seeders/LoginSeeder.php',
     'Database\\Seeders\\RoleSeeder' => $baseDir . '/database/seeders/RoleSeeder.php',
     'Database\\Seeders\\StudrecSeeder' => $baseDir . '/database/seeders/StudrecSeeder.php',
     'Database\\Seeders\\UserSeeder' => $baseDir . '/database/seeders/UserSeeder.php',
