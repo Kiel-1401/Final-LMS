@@ -1,38 +1,68 @@
-import React from "react";
-import { Typography, Box, Link } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Typography,
+  Box,
+  useMediaQuery,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+
 import {
   Subject,
   SupervisorAccount,
-  School,
   Diversity1,
   Groups2,
+  AccountCircle,
 } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
-import { Link as RouterLink } from "react-router-dom"; // Import Link from react-router-dom
+import { useNavigate } from "react-router-dom";
+import logo from "../img/sicclogo.png"; // Import the logo
 import Navbar from "../components/atoms/Navbar";
 import Sidebar from "../components/atoms/Sidebar";
 
-const AInstrctor = () => {
-  const navigate = useNavigate(); // Use navigate for programmatic navigation
+const AInstructor = () => {
+  const navigate = useNavigate();
+  const isSmallScreen = useMediaQuery("(max-width: 600px)");
+  const [sidebarOpen, setSidebarOpen] = useState(!isSmallScreen); // Sidebar state
+
+  const instructors = [
+    {
+      id: 1,
+      name: "Dr. Jose Santos",
+      department: "History",
+    },
+    {
+      id: 2,
+      name: "Ms. Anna Cruz",
+      department: "Psychology",
+    },
+    {
+      id: 3,
+      name: "Prof. Mark Reyes",
+      department: "Mathematics",
+    },
+  ];
+
+  const handleInstructorClick = (instructor) => {
+    alert(`Navigating to details for ${instructor.name}`);
+  };
 
   const handleMenuClick = () => {
-    alert("Menu icon clicked!");
+    setSidebarOpen(!sidebarOpen); // Toggle sidebar visibility
   };
 
   const handleLogout = () => {
-    // Clear any stored data (e.g., JWT token, user info, etc.)
-    localStorage.removeItem("authToken"); // If you're using localStorage to store tokens
-    sessionStorage.removeItem("authToken"); // If you're using sessionStorage
-
-    // Redirect the user to the login page
-    navigate("/"); // Use navigate to go to the login page
+    localStorage.removeItem("authToken");
+    sessionStorage.removeItem("authToken");
+    navigate("/");
   };
 
   const navItems = [
     { text: "Home", onClick: () => alert("Home clicked!") },
     { text: "Profile", onClick: () => alert("Profile clicked!") },
     { text: "Settings", onClick: () => alert("Settings clicked!") },
-    { text: "Logout", onClick: handleLogout }, // Connect the logout button
+    { text: "Logout", onClick: handleLogout },
   ];
 
   const sidebarItems = [
@@ -46,15 +76,11 @@ const AInstrctor = () => {
       icon: <SupervisorAccount />,
       onClick: () => navigate("/ProgHead"),
     },
-    {
-      text: "Courses",
-      icon: <School />,
-      onClick: () => navigate("/ACourse"),
-    },
+
     {
       text: "Instructor",
       icon: <Diversity1 />,
-      onClick: () => navigate("/AInstrctor"),
+      onClick: () => navigate("/AInstructor"),
     },
     {
       text: "Students",
@@ -64,51 +90,62 @@ const AInstrctor = () => {
   ];
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{
+        display: "flex",
+        height: "100vh",
+        flexDirection: isSmallScreen ? "column" : "row",
+      }}
+    >
       <Navbar
-        title="My App"
+        title="SICC Learning Management System"
         navItems={navItems}
         onMenuClick={handleMenuClick}
+        logo={logo}
       />
-      <Sidebar
-        items={sidebarItems.map((item) => ({
-          ...item,
-          Link: item.Link ? (
-            <Link
-              component={RouterLink}
-              to={item.Link}
-              sx={{ display: "flex", alignItems: "center" }}
-            >
-              {item.icon}
-              {item.text}
-            </Link>
-          ) : (
-            <Box
-              sx={{ display: "flex", alignItems: "center" }}
-              onClick={item.onClick}
-            >
-              {item.icon}
-              {item.text}
-            </Box>
-          ),
-        }))}
-        drawerWidth={240}
-      />
+
+      {sidebarOpen && (
+        <Sidebar
+          items={sidebarItems}
+          drawerWidth={isSmallScreen ? "100%" : 240}
+          onClose={() => setSidebarOpen(false)}
+        />
+      )}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           p: 3,
-          marginLeft: "-160px", // Matches Sidebar width
-          marginTop: "64px", // Matches Navbar height
+          marginLeft: isSmallScreen || !sidebarOpen ? 0 : "240px",
+          marginTop: isSmallScreen ? "64px" : "50px",
+          overflowY: "auto",
+          overflowX: "auto",
         }}
       >
-        <Typography variant="h4" sx={{ marginBottom: 2 }}>
-          Welcome to the Instructor Dashboard
+        <Typography variant="h6" sx={{ marginBottom: 2 }}>
+          Meet Our Instructors:
         </Typography>
+        <List>
+          {instructors.map((instructor) => (
+            <ListItem
+              key={instructor.id}
+              button
+              onClick={() => handleInstructorClick(instructor)}
+              sx={{ borderBottom: "1px solid #ddd" }}
+            >
+              <ListItemIcon>
+                <AccountCircle />
+              </ListItemIcon>
+              <ListItemText
+                primary={instructor.name}
+                secondary={`Department: ${instructor.department}`}
+              />
+            </ListItem>
+          ))}
+        </List>
       </Box>
     </Box>
   );
 };
 
-export default AInstrctor;
+export default AInstructor;

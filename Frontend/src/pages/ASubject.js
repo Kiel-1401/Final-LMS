@@ -46,15 +46,11 @@ const ASubject = () => {
       icon: <SupervisorAccount />,
       onClick: () => navigate("/ProgHead"),
     },
-    {
-      text: "Courses",
-      icon: <School />,
-      onClick: () => navigate("/ACourse"),
-    },
+
     {
       text: "Instructor",
       icon: <Diversity1 />,
-      onClick: () => navigate("/AInstrctor"),
+      onClick: () => navigate("/AInstructor"),
     },
     {
       text: "Students",
