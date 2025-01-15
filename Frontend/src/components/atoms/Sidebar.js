@@ -26,16 +26,28 @@ const Sidebar = ({ items, drawerWidth = 240 }) => {
     >
       <Box sx={{ padding: 2 }}>
         <List>
-          {items.map((item) => (
+          {items.map((item, index) => (
             <ListItem
               button
-              key={item.text}
+              key={index}
               onClick={item.onClick}
               sx={{
-                "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" },
+                "&:hover": { backgroundColor: "rgba(0, 0, 0, 0.04)" },
+                "&:focus": { backgroundColor: "rgba(0, 0, 0, 0.08)" }, // Focus styling
+                borderRadius: 1, // Optional: Rounded corners for modern look
               }}
+              aria-label={item.text} // Accessibility for screen readers
             >
-              {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
+              {item.icon && (
+                <ListItemIcon
+                  sx={{
+                    minWidth: 40, // Adjust spacing for icons
+                    color: "inherit", // Ensure icons inherit color
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+              )}
               <ListItemText primary={item.text} />
             </ListItem>
           ))}
@@ -54,6 +66,10 @@ Sidebar.propTypes = {
     })
   ).isRequired,
   drawerWidth: PropTypes.number,
+};
+
+Sidebar.defaultProps = {
+  drawerWidth: 240, // Default drawer width
 };
 
 export default Sidebar;
