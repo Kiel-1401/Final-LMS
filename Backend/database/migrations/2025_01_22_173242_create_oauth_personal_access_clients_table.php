@@ -8,8 +8,10 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('oauth_personal_access_clients', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -20,8 +22,10 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('oauth_personal_access_clients');
     }
