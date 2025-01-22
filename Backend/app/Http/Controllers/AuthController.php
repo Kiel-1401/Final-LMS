@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Studrec;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,24 +12,31 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
-        }
-
-        $token = $user->createToken('Personal Access Token')->plainTextToken;
-
+    // Check for students first
+    $student = Studrec::where('email', $request->email)->first();
+    if ($student && Hash::check($request->password, $student->password)) {
+        $token = $student->createToken('Student Access Token')->plainTextToken;
         return response()->json(['token' => $token]);
     }
+
+    // Check for users
+    $user = User::where('email', $request->email)->first();
+    if ($user && Hash::check($request->password, $user->password)) {
+        $token = $user->createToken('Personal Access Token')->plainTextToken;
+        return response()->json(['token' => $token]);
+    }
+
+    throw ValidationException::withMessages([
+        'email' => ['The provided credentials are incorrect.'],
+    ]);
+}
+
     public function logout(Request $request)
     {
         $user = Auth::user();

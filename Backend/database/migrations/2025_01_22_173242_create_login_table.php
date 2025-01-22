@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('full', 200)->nullable();
             $table->string('deg', 200)->nullable();
             $table->string('usr', 200);
+            $table->string('email');
+            $table->string('password');
             $table->string('rnk', 200);
-            $table->string('pass', 200);
             $table->integer('overloadID')->default(1);
             $table->integer('overloadone')->nullable()->default(1);
             $table->integer('stat_emp')->nullable()->default(0);

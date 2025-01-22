@@ -7,6 +7,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             StudrecSeeder::class,
             AssignStudentRoleSeeder::class,
+            MigrateStudrecToUsersSeeder::class,
         ]);
     }
 }
