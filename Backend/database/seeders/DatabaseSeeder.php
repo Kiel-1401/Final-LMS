@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             StudrecSeeder::class,
             AssignStudentRoleSeeder::class,
             MigrateStudrecToUsersSeeder::class,
+            MigrateLoginDataSeeder::class,
         ]);
     }
 }
