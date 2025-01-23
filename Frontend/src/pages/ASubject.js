@@ -7,6 +7,8 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  CircularProgress,
+  Alert,
 } from "@mui/material";
 import {
   Subject,
@@ -18,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/atoms/Navbar";
 import Sidebar from "../components/atoms/Sidebar";
 import logo from "../img/sicclogo.png"; // Import the logo
+import useSubjects from "../components/hooks/useSubject";
 
 const ASubject = () => {
   const navigate = useNavigate();
@@ -30,26 +33,10 @@ const ASubject = () => {
     localStorage.setItem("sidebarOpen", JSON.stringify(sidebarOpen));
   }, [sidebarOpen]);
 
-  const subjects = [
-    {
-      id: 1,
-      name: "Mathematics 101",
-      description: "Basic concepts of mathematics.",
-    },
-    {
-      id: 2,
-      name: "History 101",
-      description: "Introduction to world history.",
-    },
-    {
-      id: 3,
-      name: "Psychology 101",
-      description: "Foundations of psychology.",
-    },
-  ];
+  const { subjects, loading, error } = useSubjects(); // Updated hook
 
   const handleSubjectClick = (subject) => {
-    alert(`Navigating to details for ${subject.name}`);
+    alert(`Navigating to details for ${subject.description}`);
   };
 
   const handleMenuClick = () => {
@@ -73,7 +60,7 @@ const ASubject = () => {
     {
       text: "Subject",
       icon: <Subject />,
-      onClick: () => navigate("/dashboard"),
+      onClick: () => navigate("/ASubject"),
     },
     {
       text: "Program Head",
@@ -115,7 +102,7 @@ const ASubject = () => {
         />
       )}
 
-      {/* <Box
+      <Box
         component="main"
         sx={{
           flexGrow: 1,
@@ -125,29 +112,44 @@ const ASubject = () => {
           overflowY: "auto",
           overflowX: "auto",
         }}
-      > */}
+      >
         <Typography variant="h6" sx={{ marginBottom: 2 }}>
           Available Subjects:
         </Typography>
-        <List>
-          {subjects.map((subject) => (
-            <ListItem
-              key={subject.id}
-              button
-              onClick={() => handleSubjectClick(subject)}
-              sx={{ borderBottom: "1px solid #ddd" }}
-            >
-              <ListItemIcon>
-                <Subject />
-              </ListItemIcon>
-              <ListItemText
-                primary={subject.name}
-                secondary={subject.description}
-              />
-            </ListItem>
-          ))}
-        </List>
-      {/* </Box> */}
+
+        {loading && (
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+            <CircularProgress />
+          </Box>
+        )}
+
+        {error && (
+          <Alert severity="error" sx={{ mt: 2 }}>
+            Error fetching subjects: {error}
+          </Alert>
+        )}
+
+        {!loading && !error && (
+          <List>
+            {subjects.map((subject) => (
+              <ListItem
+                key={subject.id}
+                button
+                onClick={() => handleSubjectClick(subject)}
+                sx={{ borderBottom: "1px solid #ddd" }}
+              >
+                <ListItemIcon>
+                  <Subject />
+                </ListItemIcon>
+                <ListItemText
+                  primary={subject.description} // Display the subject description
+                  secondary={`Code: ${subject.code}`} // Display additional details if needed
+                />
+              </ListItem>
+            ))}
+          </List>
+        )}
+      </Box>
     </Box>
   );
 };
