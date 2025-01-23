@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SubclassController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +22,6 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // Use the correct 'auth:sanctum' middleware for Sanctum authentication
 Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'index']);
+
+Route::get('/subclasses', [SubclassController::class, 'getSubclassesWithSubjects']);
+Route::get('/subjects', [SubjectController::class, 'getSubjects']);
