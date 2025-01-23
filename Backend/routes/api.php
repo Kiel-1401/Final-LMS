@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SchedulingController;
+use App\Http\Controllers\StudrecController;
 use App\Http\Controllers\SubclassController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
@@ -25,3 +29,11 @@ Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'index']
 
 Route::get('/subclasses', [SubclassController::class, 'getSubclassesWithSubjects']);
 Route::get('/subjects', [SubjectController::class, 'getSubjects']);
+Route::get('/studrecs', [StudrecController::class, 'getStudrecs']);
+Route::get('/logins', [LoginController::class, 'getLogins']);
+Route::get('/courses', [CourseController::class, 'getCourses']);
+
+Route::apiResource('studrec', StudrecController::class);
+Route::apiResource('login', LoginController::class);
+Route::apiResource('course', CourseController::class);
+Route::apiResource('scheduling', SchedulingController::class);
