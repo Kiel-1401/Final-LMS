@@ -1,88 +1,16 @@
 import React, { useState } from "react";
-import { Typography, Box, useMediaQuery } from "@mui/material";
-import {
-  Subject,
-  SupervisorAccount,
-  Diversity1,
-  Groups2,
-  Book,
-} from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
-import ListComponent from "../atoms/List";
-import logo from "../../img/sicclogo.png"; // Import the logo
+import { Box, useMediaQuery } from "@mui/material";
 import Navbar from "../atoms/Navbar";
 import Sidebar from "../atoms/Sidebar";
+import logo from "../../img/sicclogo.png";
 
-const AdminDashboard = () => {
-  const navigate = useNavigate();
+const AdminDashboard = ({ title, navItems, sidebarItems, children }) => {
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
-  const [sidebarOpen, setSidebarOpen] = useState(!isSmallScreen); // Sidebar state
-
-  const courses = [
-    {
-      id: 1,
-      text: "Life and Works of Rizal",
-      teacher: "Dr. Jose Santos",
-      icon: <Book />,
-    },
-    {
-      id: 2,
-      text: "Understanding the Self",
-      teacher: "Ms. Anna Cruz",
-      icon: <Book />,
-    },
-    {
-      id: 3,
-      text: "Mathematics in the Modern World",
-      teacher: "Prof. Mark Reyes",
-      icon: <Book />,
-    },
-  ];
-
-  const handleCourseClick = (course) => {
-    alert(`Navigating to ${course.text}`);
-  };
+  const [sidebarOpen, setSidebarOpen] = useState(!isSmallScreen);
 
   const handleMenuClick = () => {
-    setSidebarOpen(!sidebarOpen); // Toggle sidebar visibility
+    setSidebarOpen(!sidebarOpen);
   };
-
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    sessionStorage.removeItem("authToken");
-    navigate("/");
-  };
-
-  const navItems = [
-    { text: "Home", onClick: () => alert("Home clicked!") },
-    { text: "Profile", onClick: () => alert("Profile clicked!") },
-    { text: "Settings", onClick: () => alert("Settings clicked!") },
-    { text: "Logout", onClick: handleLogout },
-  ];
-
-  const sidebarItems = [
-    {
-      text: "Subject",
-      icon: <Subject />,
-      onClick: () => navigate("/dashboard"),
-    },
-    {
-      text: "Program Head",
-      icon: <SupervisorAccount />,
-      onClick: () => navigate("/ProgHead"),
-    },
-
-    {
-      text: "Instructor",
-      icon: <Diversity1 />,
-      onClick: () => navigate("/AInstructor"),
-    },
-    {
-      text: "Students",
-      icon: <Groups2 />,
-      onClick: () => navigate("/Students"),
-    },
-  ];
 
   return (
     <Box
@@ -92,20 +20,35 @@ const AdminDashboard = () => {
         flexDirection: isSmallScreen ? "column" : "row",
       }}
     >
+      {/* Navbar */}
       <Navbar
-        title="SICC Learning Management System"
+        title={title}
         navItems={navItems}
         onMenuClick={handleMenuClick}
         logo={logo}
       />
 
-      {sidebarOpen && (
+      {/* Sidebar without motion */}
+      <Box
+        sx={{
+          position: "fixed",
+          top: isSmallScreen ? "64px" : 0,
+          left: sidebarOpen ? 0 : isSmallScreen ? "-100%" : "-240px",
+          height: "100%",
+          width: isSmallScreen ? "100%" : "240px",
+          background: "white",
+          zIndex: 1200,
+          overflow: "hidden",
+          transition: "left 0.3s ease-in-out",
+        }}
+      >
         <Sidebar
           items={sidebarItems}
           drawerWidth={isSmallScreen ? "100%" : 240}
-          onClose={() => setSidebarOpen(false)}
         />
-      )}
+      </Box>
+
+      {/* Main Content */}
       <Box
         component="main"
         sx={{
@@ -113,14 +56,10 @@ const AdminDashboard = () => {
           p: 3,
           marginLeft: isSmallScreen || !sidebarOpen ? 0 : "240px",
           marginTop: isSmallScreen ? "64px" : "50px",
-          overflowY: "auto",
-          overflowX: "auto",
+          overflow: "auto",
         }}
       >
-        <Typography variant="h6" sx={{ marginBottom: 2 }}>
-          Available Courses:
-        </Typography>
-        <ListComponent items={courses} onItemClick={handleCourseClick} />
+        {children}
       </Box>
     </Box>
   );
