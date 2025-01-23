@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Typography, Container } from "@mui/material";
-import AdminDashboard from "../components/templates/AdminDashboard";
+
 import StudentDashboard from "../components/templates/StudentDashboard";
 import TeacherDashboard from "../components/templates/TeacherDashboard";
 import axiosInstance from "../services/axiosInstance";
 import ProgHeadDashboard from "../components/templates/ProgHeadDashboard";
+import ASubject from "./ASubject";
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -32,7 +33,7 @@ const Dashboard = () => {
     <Container>
       <div>
         {user.role.name === "Admin" ? (
-          <AdminDashboard />
+          <ASubject />
         ) : user.role.name === "Department Head" ? (
           <ProgHeadDashboard />
         ) : user.role.name === "Instructor" ? (
