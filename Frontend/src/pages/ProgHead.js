@@ -3,7 +3,6 @@ import { Typography, Box, useMediaQuery, Grid } from "@mui/material";
 import {
   Subject,
   SupervisorAccount,
-  School,
   Diversity1,
   Groups2,
 } from "@mui/icons-material";
@@ -39,7 +38,7 @@ const ProgHead = () => {
     {
       text: "Subject",
       icon: <Subject />,
-      onClick: () => navigate("/dashboard"),
+      onClick: () => navigate("/ASubject"),
     },
     {
       text: "Program Head",

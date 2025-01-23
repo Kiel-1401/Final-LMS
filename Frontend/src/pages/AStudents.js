@@ -69,7 +69,7 @@ const Students = () => {
     {
       text: "Subject",
       icon: <Subject />,
-      onClick: () => navigate("/dashboard"),
+      onClick: () => navigate("/ASubject"),
     },
     {
       text: "Program Head",

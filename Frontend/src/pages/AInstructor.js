@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Typography,
   Box,
-  useMediaQuery,
   List,
   ListItem,
   ListItemIcon,
@@ -23,8 +22,7 @@ import Sidebar from "../components/atoms/Sidebar";
 
 const AInstructor = () => {
   const navigate = useNavigate();
-  const isSmallScreen = useMediaQuery("(max-width: 600px)");
-  const [sidebarOpen, setSidebarOpen] = useState(!isSmallScreen); // Sidebar state
+  const [sidebarOpen, setSidebarOpen] = useState(true); // Sidebar state
 
   const instructors = [
     {
@@ -69,14 +67,13 @@ const AInstructor = () => {
     {
       text: "Subject",
       icon: <Subject />,
-      onClick: () => navigate("/dashboard"),
+      onClick: () => navigate("/ASubject"),
     },
     {
       text: "Program Head",
       icon: <SupervisorAccount />,
       onClick: () => navigate("/ProgHead"),
     },
-
     {
       text: "Instructor",
       icon: <Diversity1 />,
@@ -94,7 +91,7 @@ const AInstructor = () => {
       sx={{
         display: "flex",
         height: "100vh",
-        flexDirection: isSmallScreen ? "column" : "row",
+        flexDirection: "row",
       }}
     >
       <Navbar
@@ -107,7 +104,7 @@ const AInstructor = () => {
       {sidebarOpen && (
         <Sidebar
           items={sidebarItems}
-          drawerWidth={isSmallScreen ? "100%" : 240}
+          drawerWidth={240}
           onClose={() => setSidebarOpen(false)}
         />
       )}
@@ -116,8 +113,8 @@ const AInstructor = () => {
         sx={{
           flexGrow: 1,
           p: 3,
-          marginLeft: isSmallScreen || !sidebarOpen ? 0 : "240px",
-          marginTop: isSmallScreen ? "64px" : "50px",
+          marginLeft: sidebarOpen ? "240px" : 0,
+          marginTop: "50px",
           overflowY: "auto",
           overflowX: "auto",
         }}
