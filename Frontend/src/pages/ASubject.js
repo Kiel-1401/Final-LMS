@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import {
   Typography,
   Box,
-  useMediaQuery,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   CircularProgress,
   Alert,
+  Pagination,
 } from "@mui/material";
 import {
   Subject,
@@ -24,10 +24,12 @@ import useSubjects from "../components/hooks/useSubject";
 
 const ASubject = () => {
   const navigate = useNavigate();
-  const isSmallScreen = useMediaQuery("(max-width: 600px)");
   const [sidebarOpen, setSidebarOpen] = useState(
-    () => JSON.parse(localStorage.getItem("sidebarOpen")) || !isSmallScreen
+    () => JSON.parse(localStorage.getItem("sidebarOpen")) || true
   );
+
+  const [currentPage, setCurrentPage] = useState(1); // State for the current page
+  const subjectsPerPage = 5; // Number of subjects per page
 
   useEffect(() => {
     localStorage.setItem("sidebarOpen", JSON.stringify(sidebarOpen));
@@ -79,14 +81,22 @@ const ASubject = () => {
     },
   ];
 
+  // Pagination logic
+  const indexOfLastSubject = currentPage * subjectsPerPage;
+  const indexOfFirstSubject = indexOfLastSubject - subjectsPerPage;
+  const currentSubjects = subjects.slice(indexOfFirstSubject, indexOfLastSubject);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
   return (
     <Box
-      sx={{
-        display: "flex",
-        height: "100vh",
-        flexDirection: isSmallScreen ? "column" : "row",
-      }}
-    >
+    sx={{
+      display: "flex",
+      height: "100vh",
+    }}
+  >
       <Navbar
         title="SICC Learning Management System"
         navItems={navItems}
@@ -97,7 +107,7 @@ const ASubject = () => {
       {sidebarOpen && (
         <Sidebar
           items={sidebarItems}
-          drawerWidth={isSmallScreen ? "100%" : 240}
+          drawerWidth={240}
           onClose={() => setSidebarOpen(false)}
         />
       )}
@@ -107,10 +117,9 @@ const ASubject = () => {
         sx={{
           flexGrow: 1,
           p: 3,
-          marginLeft: isSmallScreen || !sidebarOpen ? 0 : "240px",
-          marginTop: isSmallScreen ? "64px" : "50px",
+          marginTop: "64px",
+          marginLeft: sidebarOpen ? "40px" : 0,
           overflowY: "auto",
-          overflowX: "auto",
         }}
       >
         <Typography variant="h6" sx={{ marginBottom: 2 }}>
@@ -130,24 +139,36 @@ const ASubject = () => {
         )}
 
         {!loading && !error && (
-          <List>
-            {subjects.map((subject) => (
-              <ListItem
-                key={subject.id}
-                button
-                onClick={() => handleSubjectClick(subject)}
-                sx={{ borderBottom: "1px solid #ddd" }}
-              >
-                <ListItemIcon>
-                  <Subject />
-                </ListItemIcon>
-                <ListItemText
-                  primary={subject.description} // Display the subject description
-                  secondary={`Code: ${subject.code}`} // Display additional details if needed
-                />
-              </ListItem>
-            ))}
-          </List>
+          <>
+            <List>
+              {currentSubjects.map((subject) => (
+                <ListItem
+                  key={subject.id}
+                  button
+                  onClick={() => handleSubjectClick(subject)}
+                  sx={{ borderBottom: "1px solid #ddd" }}
+                >
+                  <ListItemIcon>
+                    <Subject />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={subject.description}
+                    secondary={`Code: ${subject.code}`}
+                  />
+                </ListItem>
+              ))}
+            </List>
+
+            {/* Pagination */}
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+              <Pagination
+                count={Math.ceil(subjects.length / subjectsPerPage)}
+                page={currentPage}
+                onChange={handlePageChange}
+                color="primary"
+              />
+            </Box>
+          </>
         )}
       </Box>
     </Box>
