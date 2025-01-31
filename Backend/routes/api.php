@@ -22,10 +22,13 @@ use Illuminate\Support\Facades\Route;
 | 
 */
 
+
 Route::post('/login', [AuthController::class, 'login']);
+
 
 // Use the correct 'auth:sanctum' middleware for Sanctum authentication
 Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'index']);
+Route::post('/user', [UserController::class, 'store']);
 
 Route::get('/subclasses', [SubclassController::class, 'getSubclassesWithSubjects']);
 Route::get('/subjects', [SubjectController::class, 'getSubjects']);
@@ -33,7 +36,7 @@ Route::get('/studrecs', [StudrecController::class, 'getStudrecs']);
 Route::get('/logins', [LoginController::class, 'getLogins']);
 Route::get('/courses', [CourseController::class, 'getCourses']);
 
-Route::apiResource('studrec', StudrecController::class);
-Route::apiResource('login', LoginController::class);
-Route::apiResource('course', CourseController::class);
-Route::apiResource('scheduling', SchedulingController::class);
+// Route::apiResource('studrec', StudrecController::class);
+// Route::apiResource('login', LoginController::class);
+// Route::apiResource('course', CourseController::class);
+// Route::apiResource('scheduling', SchedulingController::class);

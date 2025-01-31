@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('login', function (Blueprint $table) {
-            $table->foreignId('role_id')->nullable()->constrained('roles')->onDelete('set null');
-        });
+        // Check if the 'login' table exists before modifying it
+        if (Schema::hasTable('login') && !Schema::hasColumn('login', 'role_id')) {
+            Schema::table('login', function (Blueprint $table) {
+                $table->foreignId('role_id')->nullable()->constrained('roles')->onDelete('set null');
+            });
+        }
     }
 
     /**
@@ -25,9 +28,14 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('login', function (Blueprint $table) {
-            $table->dropForeign(['role_id']);
-            $table->dropColumn('role_id');
-        });
+        // Ensure the 'login' table exists before modifying it
+        if (Schema::hasTable('login')) {
+            Schema::table('login', function (Blueprint $table) {
+                if (Schema::hasColumn('login', 'role_id')) {
+                    $table->dropForeign(['role_id']);
+                    $table->dropColumn('role_id');
+                }
+            });
+        }
     }
 };

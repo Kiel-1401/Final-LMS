@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('setinitial', function (Blueprint $table) {
-            $table->integer('id', true);
-            $table->string('schedcode_initial', 200)->nullable();
-            $table->string('schedcode_set', 200)->nullable();
+        Schema::create('course', function (Blueprint $table) {
+            $table->integer('courseID');
+            $table->string('cname', 200)->nullable();
+            $table->integer('loginID')->nullable();
+            $table->string('av', 100)->nullable();
+            $table->string('cmo')->nullable();
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('setinitial');
+        Schema::dropIfExists('course');
     }
 };

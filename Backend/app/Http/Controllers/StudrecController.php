@@ -27,10 +27,18 @@ class StudrecController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $studrec = Studrec::create($request->all());
-        return response()->json($studrec, 201);
-    }
+{
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:studrecs,email',
+        'password' => 'required|string|min:8', // Use bcrypt later
+    ]);
+
+    $validatedData['password'] = bcrypt($validatedData['password']);
+    $studrec = Studrec::create($validatedData);
+
+    return response()->json($studrec, 201);
+}
 
     public function update(Request $request, $id)
     {

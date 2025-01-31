@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('studentqrs', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('studentId');
-            $table->string('qrcode');
-            $table->integer('is_active')->default(1);
-            $table->string('parentsEmail')->nullable();
+            $table->string('name'); // Ensure name is required
+            $table->string('email')->unique();
+            $table->string('password');
             $table->timestamps();
-            $table->integer('is_ext_lcl')->default(0);
+            $table->foreignId('role_id')->nullable()->default(1)->constrained('roles')->onDelete('set null');
+            $table->string('studID')->nullable();
         });
     }
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('studentqrs');
+        Schema::dropIfExists('users');
     }
 };

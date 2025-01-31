@@ -14,7 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreign(['role_id'])->references(['id'])->on('roles');
+            // Drop the existing foreign key constraint and index if they exist
+            $table->dropForeign(['role_id']);
+            $table->dropIndex(['role_id']);
+
+            // Add the foreign key constraint again
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('CASCADE');
         });
     }
 
@@ -26,7 +31,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign('users_role_id_foreign');
+            // Drop the foreign key constraint
+            $table->dropForeign(['role_id']);
         });
     }
 };

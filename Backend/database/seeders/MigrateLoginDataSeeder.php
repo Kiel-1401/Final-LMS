@@ -9,30 +9,50 @@ use Illuminate\Support\Facades\Hash;
 class MigrateLoginDataSeeder extends Seeder
 {
     /**
-     * Run the migrations.
+     * Run the seeder.
      *
      * @return void
      */
     public function run()
     {
-        // Retrieve all login data
+        // Retrieve all records from the `login` table
         $logins = DB::table('login')->get();
 
         foreach ($logins as $login) {
-            // Create the email and password combination
-            $email = $login->usr . $login->loginID . '@sicc.edu'; // Adjust domain as needed
-            $password = 'Default' . $login->loginID;
+            // Generate the default email
+            $email = $login->usr . $login->loginID . '@sicc.edu';
 
-            // Insert data into users table
-            DB::table('users')->insert([
-                'name' => $login->full, // You can adjust this field to fit your logic
-                'email' => $email,
-                'password' => Hash::make($password), // Hash the generated password
-                'role_id' => $login->role_id ?? 1, // Use the login's role_id or default to 1
-                'studID' => null, // Adjust if you have a studID value
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            // Update the `login` table's email column
+            DB::table('login')
+                ->where('loginID', $login->loginID)
+                ->update(['email' => $email]);
+
+            // Check if the email already exists in the `users` table
+            $existingUser = DB::table('users')->where('email', $email)->first();
+
+            if ($existingUser) {
+                // Update the `users` table if necessary
+                DB::table('users')
+                    ->where('email', $email)
+                    ->update([
+                        'name' => $login->full,
+                        'password' => Hash::make($login->loginID . 'ONESICC'), // Default password
+                        'role_id' => $login->role_id ?? 1, // Assign a default role if not present
+                        'updated_at' => now(),
+                    ]);
+            } else {
+                // Insert a new record in the `users` table
+                DB::table('users')->insert([
+                    'name' => $login->full,
+                    'email' => $email,
+                    'password' => Hash::make( $login->loginID . 'ONESICC'), // Default password
+                    'role_id' => $login->role_id ?? 1, // Default role
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
         }
+
+        echo "Seeder executed successfully.\n";
     }
 }
