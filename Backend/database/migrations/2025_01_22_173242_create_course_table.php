@@ -13,13 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('course', function (Blueprint $table) {
-            $table->integer('courseID', true);
-            $table->string('cname', 200)->nullable();
-            $table->integer('loginID')->nullable();
-            $table->string('av', 100)->nullable();
-            $table->string('cmo')->nullable();
-        });
+        // Only create the table if it does not already exist
+        if (!Schema::hasTable('course')) {
+            Schema::create('course', function (Blueprint $table) {
+                $table->integer('courseID', true);
+                $table->string('cname', 200)->nullable();
+                $table->integer('loginID')->nullable();
+                $table->string('av', 100)->nullable();
+                $table->string('cmo')->nullable();
+            });
+        }
     }
 
     /**

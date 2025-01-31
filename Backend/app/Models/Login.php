@@ -9,6 +9,8 @@ class Login extends Model
 {
     use HasFactory;
 
+    protected $table = 'login';
+
     protected $primaryKey = 'loginID';
 
     public $incrementing = true;
@@ -27,6 +29,7 @@ class Login extends Model
         'unitEarned',
         'stat',
         'role_id', // Add role_id to fillable if needed
+        'email', // Add email to fillable if needed
     ];
 
     /**

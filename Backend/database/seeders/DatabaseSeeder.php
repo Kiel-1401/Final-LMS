@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             AdminSeeder::class,
             UserSeeder::class,
-            StudrecSeeder::class,
             AssignStudentRoleSeeder::class,
             MigrateStudrecToUsersSeeder::class,
             MigrateLoginDataSeeder::class,

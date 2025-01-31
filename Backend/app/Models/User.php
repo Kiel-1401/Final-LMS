@@ -20,7 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id',  // Add the role_id field to the fillable array
+        'role_id',
+        'studID', // Added studID
     ];
 
     /**
@@ -49,5 +50,4 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
-
 }

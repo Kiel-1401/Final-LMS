@@ -13,14 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('blocking', function (Blueprint $table) {
-            $table->integer('blockID', true);
-            $table->string('session', 200)->nullable();
-            $table->string('yearlvl', 200)->nullable();
-            $table->string('schedcodeID', 200)->nullable();
-            $table->integer('courseID')->nullable();
-            $table->string('class', 200)->nullable();
-        });
+        // Check if the 'blocking' table exists before creating it
+        if (!Schema::hasTable('blocking')) {
+            Schema::create('blocking', function (Blueprint $table) {
+                $table->integer('blockID', true);
+                $table->string('session', 200)->nullable();
+                $table->string('yearlvl', 200)->nullable();
+                $table->string('schedcodeID', 200)->nullable();
+                $table->integer('courseID')->nullable();
+                $table->string('class', 200)->nullable();
+            });
+        }
     }
 
     /**

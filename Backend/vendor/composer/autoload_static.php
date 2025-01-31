@@ -439,8 +439,8 @@ class ComposerStaticInitda83b5ad38a633af40abc381ab1ac7c1
         ),
         'League\\Uri\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/uri-interfaces',
-            1 => __DIR__ . '/..' . '/league/uri',
+            0 => __DIR__ . '/..' . '/league/uri',
+            1 => __DIR__ . '/..' . '/league/uri-interfaces',
         ),
         'League\\OAuth2\\Server\\' => 
         array (
@@ -642,6 +642,12 @@ class ComposerStaticInitda83b5ad38a633af40abc381ab1ac7c1
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\CourseController' => __DIR__ . '/../..' . '/app/Http/Controllers/CourseController.php',
+        'App\\Http\\Controllers\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/LoginController.php',
+        'App\\Http\\Controllers\\SchedulingController' => __DIR__ . '/../..' . '/app/Http/Controllers/SchedulingController.php',
+        'App\\Http\\Controllers\\StudrecController' => __DIR__ . '/../..' . '/app/Http/Controllers/StudrecController.php',
+        'App\\Http\\Controllers\\SubclassController' => __DIR__ . '/../..' . '/app/Http/Controllers/SubclassController.php',
+        'App\\Http\\Controllers\\SubjectController' => __DIR__ . '/../..' . '/app/Http/Controllers/SubjectController.php',
         'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
@@ -781,6 +787,8 @@ class ComposerStaticInitda83b5ad38a633af40abc381ab1ac7c1
         'Database\\Seeders\\AdminSeeder' => __DIR__ . '/../..' . '/database/seeders/AdminSeeder.php',
         'Database\\Seeders\\AssignStudentRoleSeeder' => __DIR__ . '/../..' . '/database/seeders/AssignStudentRoleSeeder.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
+        'Database\\Seeders\\MigrateLoginDataSeeder' => __DIR__ . '/../..' . '/database/seeders/MigrateLoginDataSeeder.php',
+        'Database\\Seeders\\MigrateStudrecToUsersSeeder' => __DIR__ . '/../..' . '/database/seeders/MigrateStudrecToUsersSeeder.php',
         'Database\\Seeders\\RoleSeeder' => __DIR__ . '/../..' . '/database/seeders/RoleSeeder.php',
         'Database\\Seeders\\StudrecSeeder' => __DIR__ . '/../..' . '/database/seeders/StudrecSeeder.php',
         'Database\\Seeders\\UserSeeder' => __DIR__ . '/../..' . '/database/seeders/UserSeeder.php',

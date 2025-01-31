@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -46,8 +47,32 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Log::info('User store request:', $request->all());
+        // Validate the input data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'role_id' => 'required|integer|exists:roles,id',
+        ]);
+    
+        // Create a new user
+        $user = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')), // Encrypt the password
+            'role_id' => $request->input('role_id'),
+        ]);
+    
+        // Return a success response
+        return response()->json([
+            'message' => 'User created successfully',
+            'user' => $user,
+        ], 201);
+
+        dd($request->all());
     }
+    
 
     /**
      * Display the specified resource.
