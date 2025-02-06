@@ -11,11 +11,19 @@ import logo from "../img/sicclogo.png";
 import Navbar from "../components/atoms/Navbar";
 import Sidebar from "../components/atoms/Sidebar";
 import CardBase from "../components/atoms/Card";
+import useLogin from "../components/hooks/useLogin";
 
 const ProgHead = () => {
   const navigate = useNavigate();
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
   const [sidebarOpen, setSidebarOpen] = useState(!isSmallScreen);
+
+  const { subLogin, loading, error } = useLogin();
+
+  // Filter users with role_id === 3 (Program Heads)
+  const programHeads = subLogin
+    .filter((user) => user.role_id === 3)
+    .slice(0, 5);
 
   const handleMenuClick = () => {
     setSidebarOpen(!sidebarOpen);
@@ -45,7 +53,6 @@ const ProgHead = () => {
       icon: <SupervisorAccount />,
       onClick: () => navigate("/ProgHead"),
     },
-
     {
       text: "Instructor",
       icon: <Diversity1 />,
@@ -58,17 +65,8 @@ const ProgHead = () => {
     },
   ];
 
-  const programHeads = [
-    { id: 1, name: "Dr. John Doe", department: "Computer Science" },
-    { id: 2, name: "Ms. Jane Smith", department: "Mathematics" },
-    { id: 3, name: "Mr. Alex Johnson", department: "Physics" },
-    { id: 4, name: "Dr. Emily Davis", department: "Chemistry" },
-  ];
-
   const handleCardClick = (id) => {
     alert(`Program Head ID: ${id}`);
-    // Or navigate to a detailed page
-    // navigate(`/program-heads/${id}`);
   };
 
   return (
@@ -93,6 +91,7 @@ const ProgHead = () => {
           onClose={() => setSidebarOpen(false)}
         />
       )}
+
       <Box
         component="main"
         sx={{
@@ -108,22 +107,28 @@ const ProgHead = () => {
           Program Heads:
         </Typography>
 
-        <Grid container spacing={2}>
-          {programHeads.map((head) => (
-            <Grid item xs={12} sm={6} md={4} key={head.id}>
-              <CardBase
-                title={head.name}
-                description={`Department: ${head.department}`}
-                onClick={() => handleCardClick(head.id)}
-                sx={{ backgroundColor: "#f5f5f5" }}
-              >
-                <Typography variant="body2" color="text.secondary">
-                  Click to view more details about {head.name}.
-                </Typography>
-              </CardBase>
-            </Grid>
-          ))}
-        </Grid>
+        {loading ? (
+          <Typography>Loading...</Typography>
+        ) : error ? (
+          <Typography color="error">{error}</Typography>
+        ) : (
+          <Grid container spacing={2}>
+            {programHeads.map((head) => (
+              <Grid item xs={12} sm={6} md={4} key={head.id}>
+                <CardBase
+                  title={head.full}
+                  description={`Email: ${head.email}`}
+                  onClick={() => handleCardClick(head.id)}
+                  sx={{ backgroundColor: "#f5f5f5" }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    Click to view more details about {head.full}.
+                  </Typography>
+                </CardBase>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Box>
     </Box>
   );

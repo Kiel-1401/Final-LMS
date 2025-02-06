@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,33 +15,31 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        {
-
-           
-
-    
-            // You can add more users as needed
-            User::create([
-                'name' => 'Depatment Head',
-                'email' => 'dh@example.com',
+        User::firstOrCreate(
+            ['email' => 'dh@example.com'], // Condition to check existing record
+            [
+                'name' => 'Department Head',
                 'password' => Hash::make('password123'),
                 'role_id' => 3,
-            ]);
-    
-            User::create([
+            ]
+        );
+
+        User::firstOrCreate(
+            ['email' => 'instuctor@gmail.com'],
+            [
                 'name' => 'Instructor',
-                'email' => 'instuctor@gmail.com',
                 'password' => Hash::make('password123'),
                 'role_id' => 2,
-            ]);
-    
-            User::create([
+            ]
+        );
+
+        User::firstOrCreate(
+            ['email' => 'student@gmail.com'],
+            [
                 'name' => 'Student',
-                'email' => 'student@gmail.com',
                 'password' => Hash::make('password123'),
                 'role_id' => 4,
-
-            ]);
-        }
+            ]
+        );
     }
 }

@@ -35,7 +35,7 @@ class AdminSeeder extends Seeder
                 // Optionally update the user data if needed
                 $existingUser->update([
                     'name' => 'User Account', // Update name or any other field
-                    'password' => Hash::make('!p@ssword123'), // Optionally update password
+                    'password' => Hash::make('SICCADMIN'), // Optionally update password
                 ]);
             }
         } else {

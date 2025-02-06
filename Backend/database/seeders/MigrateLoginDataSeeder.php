@@ -15,8 +15,8 @@ class MigrateLoginDataSeeder extends Seeder
      */
     public function run()
     {
-        // Retrieve all records from the `login` table
-        $logins = DB::table('login')->get();
+        // Retrieve only necessary columns from the `login` table
+        $logins = DB::table('login')->select('loginID', 'usr', 'full', 'role_id')->get();
 
         foreach ($logins as $login) {
             // Generate the default email
@@ -27,29 +27,17 @@ class MigrateLoginDataSeeder extends Seeder
                 ->where('loginID', $login->loginID)
                 ->update(['email' => $email]);
 
-            // Check if the email already exists in the `users` table
-            $existingUser = DB::table('users')->where('email', $email)->first();
-
-            if ($existingUser) {
-                // Update the `users` table if necessary
-                DB::table('users')
-                    ->where('email', $email)
-                    ->update([
+            // **Ensure we don't overwrite the admin account**
+            if ($email !== 'user@gmail.com') {
+                DB::table('users')->updateOrInsert(
+                    ['email' => $email], // Check existing email
+                    [
                         'name' => $login->full,
                         'password' => Hash::make($login->loginID . 'ONESICC'), // Default password
-                        'role_id' => $login->role_id ?? 1, // Assign a default role if not present
+                        'role_id' => $login->role_id ?? 1, // Default role
                         'updated_at' => now(),
-                    ]);
-            } else {
-                // Insert a new record in the `users` table
-                DB::table('users')->insert([
-                    'name' => $login->full,
-                    'email' => $email,
-                    'password' => Hash::make( $login->loginID . 'ONESICC'), // Default password
-                    'role_id' => $login->role_id ?? 1, // Default role
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
+                    ]
+                );
             }
         }
 

@@ -9,14 +9,15 @@ const useLogin = () => {
   useEffect(() => {
     const fetchLogin = async () => {
       try {
-        setLoading(true); // Start loading
-        const response = await axiosInstance.get("/login"); // Use axiosInstance
+        setLoading(true);
+        const response = await axiosInstance.get("/logins");
+        console.log("Fetched logins:", response.data); // Debugging log
         setLogin(response.data);
       } catch (err) {
         console.error("Error fetching login data:", err);
         setError(err.message);
       } finally {
-        setLoading(false); // End loading
+        setLoading(false);
       }
     };
 

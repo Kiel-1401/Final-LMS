@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography } from "@mui/material";
+import { Typography, Container } from "@mui/material";
 
 import StudentDashboard from "../components/templates/StudentDashboard";
 import TeacherDashboard from "../components/templates/TeacherDashboard";
@@ -30,6 +30,7 @@ const Dashboard = () => {
   }
 
   return (
+    <Container>
       <div>
         {user.role.name === "Admin" ? (
           <ASubject />
@@ -41,6 +42,7 @@ const Dashboard = () => {
           <StudentDashboard />
         )}
       </div>
+    </Container>
   );
 };
 

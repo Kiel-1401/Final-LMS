@@ -29,7 +29,7 @@ const ASubject = () => {
   );
 
   const [currentPage, setCurrentPage] = useState(1); // State for the current page
-  const subjectsPerPage = 5; // Number of subjects per page
+  const subjectsPerPage = 10; // Number of subjects per page
 
   useEffect(() => {
     localStorage.setItem("sidebarOpen", JSON.stringify(sidebarOpen));
@@ -84,7 +84,10 @@ const ASubject = () => {
   // Pagination logic
   const indexOfLastSubject = currentPage * subjectsPerPage;
   const indexOfFirstSubject = indexOfLastSubject - subjectsPerPage;
-  const currentSubjects = subjects.slice(indexOfFirstSubject, indexOfLastSubject);
+  const currentSubjects = subjects.slice(
+    indexOfFirstSubject,
+    indexOfLastSubject
+  );
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
@@ -92,11 +95,11 @@ const ASubject = () => {
 
   return (
     <Box
-    sx={{
-      display: "flex",
-      height: "100vh",
-    }}
-  >
+      sx={{
+        display: "flex",
+        height: "100vh",
+      }}
+    >
       <Navbar
         title="SICC Learning Management System"
         navItems={navItems}
