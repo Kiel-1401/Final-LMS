@@ -8,7 +8,6 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import logo512 from "../img/sicclogo.png";
 import backgroundImage from "../img/BackgroundSicc.jpg";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -17,6 +16,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Slide from "@mui/material/Slide";
+import axiosInstance from "../services/axiosInstance";
 
 const defaultTheme = createTheme();
 
@@ -38,10 +38,8 @@ export default function Login() {
     const password = data.get("password");
 
     try {
-      const response = await axios.post("http://localhost:8000/api/login", {
-        email,
-        password,
-      });
+      // Use axiosInstance instead of axios
+      const response = await axiosInstance.post("/login", { email, password });
 
       // Check if response and response.data.token exist
       if (response && response.data && response.data.token) {

@@ -6,8 +6,9 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  CircularProgress,
+  Alert,
 } from "@mui/material";
-
 import {
   Subject,
   SupervisorAccount,
@@ -16,38 +17,25 @@ import {
   AccountCircle,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import logo from "../img/sicclogo.png"; // Import the logo
+import logo from "../img/sicclogo.png";
 import Navbar from "../components/atoms/Navbar";
 import Sidebar from "../components/atoms/Sidebar";
+import useLogin from "../components/hooks/useLogin";
 
 const AInstructor = () => {
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(true); // Sidebar state
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const { subLogin, loading, error } = useLogin(); // Fetch login data
 
-  const instructors = [
-    {
-      id: 1,
-      name: "Dr. Jose Santos",
-      department: "History",
-    },
-    {
-      id: 2,
-      name: "Ms. Anna Cruz",
-      department: "Psychology",
-    },
-    {
-      id: 3,
-      name: "Prof. Mark Reyes",
-      department: "Mathematics",
-    },
-  ];
+  // Filter instructors with LoginID of 2
+  const instructors = (subLogin || []).filter((user) => user.loginID === 2);
 
   const handleInstructorClick = (instructor) => {
-    alert(`Navigating to details for ${instructor.name}`);
+    alert(`Navigating to details for ${instructor.full}`);
   };
 
   const handleMenuClick = () => {
-    setSidebarOpen(!sidebarOpen); // Toggle sidebar visibility
+    setSidebarOpen(!sidebarOpen);
   };
 
   const handleLogout = () => {
@@ -87,13 +75,7 @@ const AInstructor = () => {
   ];
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        height: "100vh",
-        flexDirection: "row",
-      }}
-    >
+    <Box sx={{ display: "flex", height: "100vh", flexDirection: "row" }}>
       <Navbar
         title="SICC Learning Management System"
         navItems={navItems}
@@ -108,6 +90,7 @@ const AInstructor = () => {
           onClose={() => setSidebarOpen(false)}
         />
       )}
+
       <Box
         component="main"
         sx={{
@@ -122,24 +105,33 @@ const AInstructor = () => {
         <Typography variant="h6" sx={{ marginBottom: 2 }}>
           Meet Our Instructors:
         </Typography>
-        <List>
-          {instructors.map((instructor) => (
-            <ListItem
-              key={instructor.id}
-              button
-              onClick={() => handleInstructorClick(instructor)}
-              sx={{ borderBottom: "1px solid #ddd" }}
-            >
-              <ListItemIcon>
-                <AccountCircle />
-              </ListItemIcon>
-              <ListItemText
-                primary={instructor.name}
-                secondary={`Department: ${instructor.department}`}
-              />
-            </ListItem>
-          ))}
-        </List>
+
+        {loading ? (
+          <CircularProgress />
+        ) : error ? (
+          <Alert severity="error">{error}</Alert>
+        ) : instructors.length === 0 ? (
+          <Alert severity="info">No instructors found with LoginID 2.</Alert>
+        ) : (
+          <List>
+            {instructors.map((instructor) => (
+              <ListItem
+                key={instructor.id}
+                button
+                onClick={() => handleInstructorClick(instructor)}
+                sx={{ borderBottom: "1px solid #ddd" }}
+              >
+                <ListItemIcon>
+                  <AccountCircle />
+                </ListItemIcon>
+                <ListItemText
+                  primary={instructor.name}
+                  secondary={`Department: ${instructor.department}`}
+                />
+              </ListItem>
+            ))}
+          </List>
+        )}
       </Box>
     </Box>
   );
