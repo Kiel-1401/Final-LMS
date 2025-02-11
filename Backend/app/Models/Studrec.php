@@ -14,12 +14,17 @@ class Studrec extends Model
 
     protected $keyType = 'string'; // Specify the type of the primary key if it’s not an integer
 
-    protected $fillable = ['lname', 'fname', 'mname', 'gender', 'status', 'password']; // Include any other fillable fields
+    protected $fillable = ['lname', 'fname', 'mname', 'gender', 'status', 'password',  'courseID']; // Include any other fillable fields
 
 
     public function role()
 {
     return $this->belongsTo(Role::class, 'role_id');
+}
+
+public function course()
+{
+    return $this->belongsTo(Course::class, 'courseID', 'courseID');
 }
 
 }

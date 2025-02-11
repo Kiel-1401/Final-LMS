@@ -51,4 +51,9 @@ class Course extends Model
     {
         return $this->hasMany(Blocking::class, 'courseID', 'courseID');
     }
+
+    public function students()
+    {
+        return $this->hasMany(Studrec::class, 'courseID', 'courseID');
+    }
 }
