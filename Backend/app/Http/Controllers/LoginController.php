@@ -10,6 +10,7 @@ class LoginController extends Controller
     public function getLogins()
     {
         $logins = Login::with('role')->get();
+        // $logins = Login::select('role', 'deg', 'usr','email','loginID')->get();
     
         return response()->json($logins);
     }
