@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name'); // Ensure name is required
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->timestamps();
-            $table->foreignId('role_id')->nullable()->default(1)->constrained('roles')->onDelete('set null');
-            $table->string('studID')->nullable();
-        });
+        if (!Schema::hasTable('users')) {
+            Schema::create('users', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('name');
+                $table->string('email')->unique();
+                $table->string('password');
+                $table->timestamps();
+                $table->foreignId('role_id')->nullable()->default(1)->constrained('roles')->onDelete('set null');
+                $table->string('studID')->nullable();
+            });
+        }
     }
 
     /**
@@ -31,6 +33,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        if (Schema::hasTable('users')) {
+            Schema::dropIfExists('users');
+        }
     }
 };

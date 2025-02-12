@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subclass', function (Blueprint $table) {
-            $table->integer('subclassID', true);
-            $table->string('SubclassName', 200)->nullable();
-        });
+        if (!Schema::hasTable('subclass')) {
+            Schema::create('subclass', function (Blueprint $table) {
+                $table->integer('subclassID', true);
+                $table->string('SubclassName', 200)->nullable();
+            });
+        }
     }
 
     /**
@@ -26,6 +28,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subclass');
+        if (Schema::hasTable('subclass')) {
+            Schema::dropIfExists('subclass');
+        }
     }
 };
