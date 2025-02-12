@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subject', function (Blueprint $table) {
-            $table->integer('subID', true);
-            $table->string('code', 200)->nullable();
-            $table->string('description', 200)->nullable();
-            $table->integer('lec')->nullable();
-            $table->integer('lab')->nullable();
-            $table->integer('total')->nullable();
-            $table->integer('subclassID')->nullable();
-        });
+        if (!Schema::hasTable('subject')) {
+            Schema::create('subject', function (Blueprint $table) {
+                $table->integer('subID', true);
+                $table->string('code', 200)->nullable();
+                $table->string('description', 200)->nullable();
+                $table->integer('lec')->nullable();
+                $table->integer('lab')->nullable();
+                $table->integer('total')->nullable();
+                $table->integer('subclassID')->nullable();
+            });
+        }
     }
 
     /**
@@ -31,6 +33,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subject');
+        if (Schema::hasTable('subject')) {
+            Schema::dropIfExists('subject');
+        }
     }
 };

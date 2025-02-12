@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subblockedseq', function (Blueprint $table) {
-            $table->integer('subblockedID', true);
-            $table->integer('seq')->nullable();
-            $table->string('year', 10)->nullable();
-            $table->string('sem', 10)->nullable();
-            $table->integer('subID')->nullable();
-            $table->integer('courseID')->nullable();
-            $table->integer('subclassid')->default(1);
-        });
+        if (!Schema::hasTable('subblockedseq')) {
+            Schema::create('subblockedseq', function (Blueprint $table) {
+                $table->integer('subblockedID', true);
+                $table->integer('seq')->nullable();
+                $table->string('year', 10)->nullable();
+                $table->string('sem', 10)->nullable();
+                $table->integer('subID')->nullable();
+                $table->integer('courseID')->nullable();
+                $table->integer('subclassid')->default(1);
+            });
+        }
     }
 
     /**
@@ -31,6 +33,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subblockedseq');
+        if (Schema::hasTable('subblockedseq')) {
+            Schema::dropIfExists('subblockedseq');
+        }
     }
 };

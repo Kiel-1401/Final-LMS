@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('course', function (Blueprint $table) {
-            $table->integer('courseID');
-            $table->string('cname', 200)->nullable();
-            $table->integer('loginID')->nullable();
-            $table->string('av', 100)->nullable();
-            $table->string('cmo')->nullable();
-        });
+        if (!Schema::hasTable('course')) {
+            Schema::create('course', function (Blueprint $table) {
+                $table->integer('courseID');
+                $table->string('cname', 200)->nullable();
+                $table->integer('loginID')->nullable();
+                $table->string('av', 100)->nullable();
+                $table->string('cmo')->nullable();
+            });
+        }
     }
 
     /**
@@ -29,6 +31,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course');
+        if (Schema::hasTable('course')) {
+            Schema::dropIfExists('course');
+        }
     }
 };
