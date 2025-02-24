@@ -6,6 +6,7 @@ import ProgHead from "./pages/ProgHead";
 import ASubject from "./pages/ASubject";
 import AInstructor from "./pages/AInstructor";
 import Students from "./pages/AStudents";
+import Profile from "./pages/Profile";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
       <Route path="/AInstructor" element={<AInstructor />} />
       <Route path="/Students" element={<Students />} />
       <Route path="/ProgHead" element={<ProgHead />} />
+      <Route path="/Profile" element={<Profile />} />
     </Routes>
   );
 }
