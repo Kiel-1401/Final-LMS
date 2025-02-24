@@ -8,6 +8,7 @@ import {
   ListItemText,
   CircularProgress,
   Alert,
+  Pagination, // Import Pagination
 } from "@mui/material";
 import {
   Subject,
@@ -27,8 +28,23 @@ const AInstructor = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const { subLogin, loading, error } = useLogin(); // Fetch login data
 
-  // Filter instructors with LoginID of 2
-  const instructors = (subLogin || []).filter((user) => user.loginID === 2);
+  const [currentPage, setCurrentPage] = useState(1); // State for the current page
+  const subjectsPerPage = 10; // Number of subjects per page
+
+  // Filter instructors with role_id of 2
+  const instructors = (subLogin || []).filter((user) => user.role_id === 2);
+
+  // Pagination logic
+  const indexOfLastInstructor = currentPage * subjectsPerPage;
+  const indexOfFirstInstructor = indexOfLastInstructor - subjectsPerPage;
+  const currentInstructors = instructors.slice(
+    indexOfFirstInstructor,
+    indexOfLastInstructor
+  );
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
   const handleInstructorClick = (instructor) => {
     alert(`Navigating to details for ${instructor.full}`);
@@ -111,26 +127,38 @@ const AInstructor = () => {
         ) : error ? (
           <Alert severity="error">{error}</Alert>
         ) : instructors.length === 0 ? (
-          <Alert severity="info">No instructors found with LoginID 2.</Alert>
+          <Alert severity="info">No instructors.</Alert>
         ) : (
-          <List>
-            {instructors.map((instructor) => (
-              <ListItem
-                key={instructor.id}
-                button
-                onClick={() => handleInstructorClick(instructor)}
-                sx={{ borderBottom: "1px solid #ddd" }}
-              >
-                <ListItemIcon>
-                  <AccountCircle />
-                </ListItemIcon>
-                <ListItemText
-                  primary={instructor.name}
-                  secondary={`Department: ${instructor.department}`}
-                />
-              </ListItem>
-            ))}
-          </List>
+          <>
+            <List>
+              {currentInstructors.map((instructor) => (
+                <ListItem
+                  key={instructor.id}
+                  button
+                  onClick={() => handleInstructorClick(instructor)}
+                  sx={{ borderBottom: "1px solid #ddd" }}
+                >
+                  <ListItemIcon>
+                    <AccountCircle />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={instructor.full}
+                    secondary={`Username: ${instructor.usr}`}
+                  />
+                </ListItem>
+              ))}
+            </List>
+
+            {/* Pagination */}
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+              <Pagination
+                count={Math.ceil(instructors.length / subjectsPerPage)}
+                page={currentPage}
+                onChange={handlePageChange}
+                color="primary"
+              />
+            </Box>
+          </>
         )}
       </Box>
     </Box>
