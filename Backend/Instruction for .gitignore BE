@@ -1,0 +1,30 @@
+Incase Na naa kay changes then magpakita sya as 10k changes: Follow this 
+
+0) Remove Vendor from Git Tracking
+
+git rm -r --cached vendor
+
+
+1) check if .gitignore exists:
+run this command    ls -la | grep .gitignore
+
+1.2) if it exist open it.
+
+1.3) if not create one:  
+     syntax for creating .gitignore:
+     echo. > .gitignore
+
+
+2. Inside in your .gitignore file add files or derectories you want to ignore: 
+(example)
+
+/vendor
+/.env
+/composer.lock
+/node_modules
+
+
+3. Commit the .gitignore File 
+  git add .gitignore
+  git commit -m "Ignore vendor directory"
+  git push origin main

@@ -1,0 +1,30 @@
+Incase Na naa kay changes then magpakita sya as 10k changes: Follow this 
+
+1) check if .gitignore exists:
+run this command    ls -la | grep .gitignore
+
+1.2) if it exist open it.
+
+1.3) if not create one:  
+     syntax for creating .gitignore:
+     echo. > .gitignore
+
+
+2. Inside in your .gitignore file add files or derectories you want to ignore: 
+(example)
+
+# Ignore environment files
+.env
+
+# Ignore node_modules and vendor directories
+node_modules/
+vendor/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+3. Commit the .gitignore File 
+  git add .gitignore
+  git commit -m "Added gitignore file"
+  git push origin main
